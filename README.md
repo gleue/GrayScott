@@ -1,6 +1,8 @@
 ## Reaction-Diffusion Simulation using the Gray Scott Model
 
-A simulation of two chemicals diffusing over time running on an Arduino with an LED matrix as display.
+A simulation of two chemicals diffusing over time running on an Arduino with an LED matrix as display in a nice little box.
+
+![Enclosure Model](enclosure-model.png "Enclosure")
 
 ### Reaction-Diffusion
 
