@@ -90,7 +90,9 @@ void hideValue(unsigned long now) {
     needsUpdate = true;
 }
 
-void handleEnter(unsigned long now) {
+void handleEnter(unsigned long now, bool longPress = false) {
+    if (longPress) return;
+
     if (!isVisible) {
         showMenu(now);
         return;
@@ -107,7 +109,7 @@ void handleEnter(unsigned long now) {
     }
 }
 
-void handlePrev(unsigned long now) {
+void handlePrev(unsigned long now, bool longPress = false) {
     if (!isVisible) return;
 
     if (showsValue) {
@@ -121,7 +123,7 @@ void handlePrev(unsigned long now) {
     needsUpdate = true;
 }
 
-void handleNext(unsigned long now) {
+void handleNext(unsigned long now, bool longPress = false) {
     if (!isVisible) return;
 
     if (showsValue) {
@@ -139,41 +141,79 @@ void handleNext(unsigned long now) {
 #define PREV_BUTTON 1
 #define NEXT_BUTTON 2
 #define DEBOUNCE_DELAY 50
+#define REPEAT_DELAY 500
+#define REPEAT_PAUSE 250
 
 bool loopMenu(unsigned long now) {
     static const uint8_t pins[] = { ENTER_PIN, PREV_PIN, NEXT_PIN };
     static bool down[] = { false, false, false };
     static unsigned long time[] = { 0, 0, 0 };
+    static unsigned long repeat[] = { 0, 0, 0 };
+    static bool repeating[] = { false, false, false };
 
     bool done = false;
 
     for (uint8_t idx = 0; idx < 3; idx++) {
-        uint8_t button = digitalRead(pins[idx]);
+        bool button = (digitalRead(pins[idx]) == LOW) ? true : false;
 
-        if (button != down[idx]) {
+        if (button == down[idx]) {
             time[idx] = now;
-        } else if (now - time[idx] > DEBOUNCE_DELAY) {
-            if (button == LOW && !down[idx]) {
-                down[idx] = true;
-            } else if (button == HIGH && down[idx]) {
-                down[idx] = false;
-                switch (idx) {
-                    case 0:
-                        Serial.println(F("ENTER"));
-                        handleEnter(now);
-                        done = true;
-                        break;
-                    case 1:
-                        Serial.println(F("PREV"));
-                        handlePrev(now);
-                        done = true;
-                        break;
-                    case 2:
-                        Serial.println(F("NEXT"));
-                        handleNext(now);
-                        done = true;
-                        break;
+            if (button) {
+                if (repeat[idx] == 0) {
+                    // Start repeating
+                    repeat[idx] = now;
+                } else if (now - repeat[idx] > (repeating[idx] ? REPEAT_PAUSE : REPEAT_DELAY)) {
+                    // Perform repeat after delay
+                    switch (idx) {
+                        case 0:
+                            if (!repeating[idx]) {
+                                resetSimulation();
+                            } else {
+                                // Serial.println(F("REPEAT ENTER"));
+                                handleEnter(now, true);
+                            }
+                            break;
+                        case 1:
+                            // Serial.println(F("REPEAT PREV"));
+                            handlePrev(now, true);
+                            break;
+                        case 2:
+                            // Serial.println(F("REPEAT NEXT"));
+                            handleNext(now, true);
+                            break;
+                    }
+                    repeat[idx] = 0;
+                    repeating[idx] = true;
                 }
+            }
+        } else if (now - time[idx] > DEBOUNCE_DELAY) {
+            if (button && !down[idx]) {
+                // Button down
+                down[idx] = true;
+            } else if (!button && down[idx]) {
+                down[idx] = false;
+                if (!repeating[idx]) {
+                    // Handle button on up
+                    switch (idx) {
+                        case 0:
+                            // Serial.println(F("ENTER"));
+                            handleEnter(now);
+                            done = true;
+                            break;
+                        case 1:
+                            // Serial.println(F("PREV"));
+                            handlePrev(now);
+                            done = true;
+                            break;
+                        case 2:
+                            // Serial.println(F("NEXT"));
+                            handleNext(now);
+                            done = true;
+                            break;
+                    }
+                }
+                repeat[idx] = 0;
+                repeating[idx] = false;
             }
         }
     }
