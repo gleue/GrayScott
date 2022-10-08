@@ -1,19 +1,63 @@
 #include "simulation.h"
 #include "display.h"
+#include <EEvar.h>
 
 fixed cellsA[2][SIM_DIM][SIM_DIM];
 fixed cellsB[2][SIM_DIM][SIM_DIM];
 
-fixed diffA = 1.0;
-fixed feedA = 0.055;
-fixed dripA = 0.05;
+fixed diffA;
+fixed feedA;
+fixed dripA;
 
-fixed diffB = 0.5;
-fixed killB = 0.062;
-fixed dripB = 0.01;
+fixed diffB;
+fixed killB;
+fixed dripB;
+
+const EEstore<float> eeDiffA = 1.0;
+const EEstore<float> eeFeedA = 0.055;
+const EEstore<float> eeDripA = 0.05;
+
+const EEstore<float> eeDiffB = 0.5;
+const EEstore<float> eeKillB = 0.062;
+const EEstore<float> eeDripB = 0.01;
+
+void loadParameters() {
+  float value;
+
+  eeDiffA >> value;
+  diffA = value;
+  eeFeedA >> value;
+  feedA = value;
+  eeDripA >> value;
+  dripA = value;
+
+  eeDiffB >> value;
+  diffB = value;
+  eeKillB >> value;
+  killB = value;
+  eeDripB >> value;
+  dripB = value;
+}
+
+void saveParameters() {
+  float value;
+
+  value = static_cast<float>(diffA);
+  eeDiffA << value;
+  value = static_cast<float>(feedA);
+  eeFeedA << value;
+  value = static_cast<float>(dripA);
+  eeDripA << value;
+
+  value = static_cast<float>(diffB);
+  eeDiffB << value;
+  value = static_cast<float>(killB);
+  eeKillB << value;
+  value = static_cast<float>(dripB);
+  eeDripB << value;
+}
 
 void initCells(uint8_t idx, uint8_t seedCount = 2) {
-  Serial.println(F("Init"));
   for (uint8_t i = 0; i < SIM_DIM; i++) {
     for (uint8_t j = 0; j < SIM_DIM; j++) {
       cellsA[idx][i][j] = 1.0;
@@ -88,14 +132,15 @@ fixed laplacian(fixed cells[SIM_DIM][SIM_DIM], uint8_t i, uint8_t j) {
 }
 
 unsigned long last_time;
+uint8_t cur;
 
 void initSimulation() {
-  initCells(0, random(1,4));
-  showCells(0);
+  Serial.println(F("Init"));
+  loadParameters();
+  resetSimulation();
 }
 
 void loopSimulation(unsigned long now) {
-  static uint8_t cur = 0;
 
   if (now - last_time >= SIM_STEP) {
     uint8_t nxt = (cur + 1) % 2;
@@ -119,4 +164,11 @@ void loopSimulation(unsigned long now) {
     last_time = now;
     cur = nxt;
   }
+}
+
+void resetSimulation() {
+  Serial.println(F("Reset"));
+  cur = 0;
+  initCells(cur, random(1,4));
+  showCells(cur);
 }

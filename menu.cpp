@@ -1,6 +1,7 @@
 #include "menu.h"
 #include "names.h"
 #include "display.h"
+#include "simulation.h"
 
 typedef struct {
     float step;
@@ -76,6 +77,7 @@ void drawMenu(unsigned long now) {
 
 void hideMenu(unsigned long now) {
     isVisible = false;
+    saveParameters();
 }
 
 void showValue(unsigned long now) {

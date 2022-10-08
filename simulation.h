@@ -20,5 +20,9 @@ extern fixed dripB;
 
 void initSimulation();
 void loopSimulation(unsigned long now);
+void resetSimulation();
+
+void loadParameters();
+void saveParameters();
 
 #endif //  __SIMULATION_H__
