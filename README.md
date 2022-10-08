@@ -2,7 +2,8 @@
 
 A simulation of two chemicals diffusing over time running on an Arduino with an LED matrix as display in a nice little box.
 
-![Enclosure Model](enclosure-model.png "Enclosure")
+![Simulation](simulation.png "Simulation")
+![Enclosure](enclosure.png "Enclosure")
 
 ### Reaction-Diffusion
 
@@ -43,7 +44,7 @@ From [Reaction-Diffusion Tutorial](https://www.karlsims.com/rd.html) by Karl Sim
 
 ### Usage
 
-The simulation starts automatically from a random setup.
+The simulation starts automatically from a random grid configuration. Long press `ENTER` to reset/restart the simulation.
 
 Press the `ENTER` button during simulation to get to the menu. The menu allows changing the simulation parameters. Press the `PREV` and `NEXT` buttons to cycle between parameters
 
