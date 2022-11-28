@@ -15,6 +15,11 @@ extern CRGB leds[NUM_LEDS];
 void initDisplay();
 void clearDisplay();
 
+inline uint8_t getBrightness() {
+    return FastLED.getBrightness();
+}
+void setBrightness(uint8_t brightness);
+
 void drawPixels(fixed cellsA[SIM_DIM][SIM_DIM], fixed cellsB[SIM_DIM][SIM_DIM]);
 void drawValue(fixed value, fixed min, fixed max, CRGB color, const bool *name = NULL, CRGB name_color = CRGB::Black);
 void drawName(const bool *name, CRGB color = CRGB::Grey, CRGB bg_color = CRGB::Black);

@@ -92,6 +92,12 @@ void hideValue(unsigned long now) {
     needsUpdate = true;
 }
 
+void updateBrightness(int delta) {
+    auto brightness = getBrightness() + delta;
+    Serial.print(F("BRIGHTNESS: ")); Serial.println(brightness);
+    setBrightness(brightness);
+}
+
 void handleEnter(unsigned long now, bool longPress = false) {
     if (longPress) return;
 
@@ -112,9 +118,9 @@ void handleEnter(unsigned long now, bool longPress = false) {
 }
 
 void handlePrev(unsigned long now, bool longPress = false) {
-    if (!isVisible) return;
-
-    if (showsValue) {
+    if (!isVisible) {
+        updateBrightness(-8);
+    } else if (showsValue) {
         fixed value = *values[itemNumber] - itemSettings.step;
         *values[itemNumber] = constrain(value, itemSettings.min, itemSettings.max);
     } else if (itemNumber == 0) {
@@ -126,9 +132,9 @@ void handlePrev(unsigned long now, bool longPress = false) {
 }
 
 void handleNext(unsigned long now, bool longPress = false) {
-    if (!isVisible) return;
-
-    if (showsValue) {
+    if (!isVisible) {
+        updateBrightness(+8);
+    } else if (showsValue) {
         fixed value = *values[itemNumber] + itemSettings.step;
         *values[itemNumber] = constrain(value, itemSettings.min, itemSettings.max);
     } else if (itemNumber < PARAM_COUNT) {

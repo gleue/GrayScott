@@ -1,14 +1,27 @@
 #include "display.h"
+#include <EEvar.h>
+
+const EEstore<uint8_t> eeBrightness = 96;
 
 CRGB leds[NUM_LEDS];
 
 void initDisplay() {
     FastLED.addLeds<WS2812B,LED_PIN,GRB>(leds,NUM_LEDS).setCorrection(TypicalLEDStrip);
+
+    uint8_t brightness;
+
+    eeBrightness >> brightness;
+    FastLED.setBrightness(brightness);
 }
 
 void clearDisplay() {
     memset(leds, CRGB::Black, NUM_LEDS * sizeof(CRGB));
     FastLED.show();
+}
+
+void setBrightness(uint8_t brightness) {
+    eeBrightness << brightness;
+    FastLED.setBrightness(brightness);
 }
 
 void drawPixels(fixed cellsA[SIM_DIM][SIM_DIM], fixed cellsB[SIM_DIM][SIM_DIM]) {
