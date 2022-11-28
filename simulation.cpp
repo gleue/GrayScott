@@ -73,6 +73,7 @@ void initCells(uint8_t idx, uint8_t seedCount = 2) {
     
     Serial.print(F("Seed ")); Serial.print(si); Serial.print(' '); Serial.println(sj);
 
+    cellsA[idx][si][sj] = 0.0;
     cellsB[idx][si][sj] = 1.0;
     seedCount -= 1;
   }
