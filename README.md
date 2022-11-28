@@ -70,6 +70,8 @@ The default simulation parameters are
   - Feed rate: `0.062`
   - Drip rate: `0.01`
 
+Use `PREV` and `NEXT` during simulation to decrease and increase the LED brightness.
+
 ### License
 
 The MIT License (MIT)
