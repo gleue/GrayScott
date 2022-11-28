@@ -27,11 +27,11 @@ void setBrightness(uint8_t brightness) {
 void drawPixels(fixed cellsA[SIM_DIM][SIM_DIM], fixed cellsB[SIM_DIM][SIM_DIM]) {
     for (uint8_t i = 0, idx = 0; i < SIM_DIM; i++) {
 	    for (uint8_t j = 0; j < SIM_DIM; j++, idx++) {
-        float a = float(cellsA[i][j]);
-        float b = float(cellsB[i][j]);
-        float f = a - b;
-        uint8_t hue = 80.0 + f * 80.0;
-        leds[idx] = CHSV(hue, uint8_t((a+b) * 128.0), 32);
+            float a = float(cellsA[i][j]);
+            float b = float(cellsB[i][j]);
+            float f = a - b;
+            uint8_t hue = 80.0 + f * 80.0;
+            leds[idx] = CHSV(hue, uint8_t(constrain((a+b) * 255.0, 0.0, 255.0)), 64);
 	    }
     }
     FastLED.show();

@@ -16,9 +16,9 @@ const ParamSetting parameters[] PROGMEM = {
     {0.01, 0.0, 1.0, CRGB::DarkBlue, name_diffA, CRGB::DimGray},
     {0.001, 0.0, 0.1, CRGB::DarkBlue, name_feedA, CRGB::DimGray},
     {0.01, 0.0, 0.25, CRGB::DarkBlue, name_dripA, CRGB::DimGray},
-    {0.01, 0.0, 1.0, CRGB::OrangeRed, name_diffB, CRGB::DimGray},
-    {0.001, 0.0, 0.1, CRGB::OrangeRed, name_killB, CRGB::DimGray},
-    {0.01, 0.0, 0.25, CRGB::OrangeRed, name_dripB, CRGB::DimGray}
+    {0.01, 0.0, 1.0, CRGB::DarkRed, name_diffB, CRGB::DimGray},
+    {0.001, 0.0, 0.1, CRGB::DarkRed, name_killB, CRGB::DimGray},
+    {0.01, 0.0, 0.25, CRGB::DarkRed, name_dripB, CRGB::DimGray}
 };
 
 #define PARAM_COUNT (sizeof parameters / sizeof(ParamSetting))
