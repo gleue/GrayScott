@@ -13,15 +13,17 @@ typedef struct {
 } ParamSetting;
 
 const ParamSetting parameters[] PROGMEM = {
-    {0.01, 0.0, 1.0, CRGB::DarkBlue, name_diffA, CRGB::DarkGray},
-    {0.001, 0.0, 0.1, CRGB::DarkBlue, name_feedA, CRGB::DarkGray},
-    {0.01, 0.0, 1.0, CRGB::OrangeRed, name_diffB, CRGB::DarkGray},
-    {0.001, 0.0, 0.1, CRGB::OrangeRed, name_killB, CRGB::DarkGray}
+    {0.01, 0.0, 1.0, CRGB::DarkBlue, name_diffA, CRGB::DimGray},
+    {0.001, 0.0, 0.1, CRGB::DarkBlue, name_feedA, CRGB::DimGray},
+    {0.01, 0.0, 0.25, CRGB::DarkBlue, name_dripA, CRGB::DimGray},
+    {0.01, 0.0, 1.0, CRGB::OrangeRed, name_diffB, CRGB::DimGray},
+    {0.001, 0.0, 0.1, CRGB::OrangeRed, name_killB, CRGB::DimGray},
+    {0.01, 0.0, 0.25, CRGB::OrangeRed, name_dripB, CRGB::DimGray}
 };
 
 #define PARAM_COUNT (sizeof parameters / sizeof(ParamSetting))
 
-fixed *values[] = { &diffA, &feedA, &diffB, &killB };
+fixed *values[] = { &diffA, &feedA, &dripA, &diffB, &killB, &dripB };
 
 fixed paramValue(int16_t analog, float divisor = 1023.0, float min = 0.0, float max = 1.0) {
     return constrain(float(analog) / divisor, min, max);
@@ -71,7 +73,7 @@ void drawMenu(unsigned long now) {
         drawName(itemSettings.name, itemSettings.name_color);
     } else if (!showsValue) {
         // Virtual exit item
-        drawName(name_close, CRGB::Red);
+        drawName(name_close, CRGB::DarkOrchid);
     }
 }
 

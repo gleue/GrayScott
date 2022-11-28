@@ -50,11 +50,13 @@ Press the `ENTER` button during simulation to get to the menu. The menu allows c
 
 - A: diffusion rate
 - A<sup>+</sup>: feed rate
+- A': drip rate (*)
 - B: diffusion rate
 - B<sup>-</sup>: kill rate
+- B': drip rate (*)
 - X: close menu
 
-There are two extra simulation parameters not present in the standard Gray-Scott model: drip rate A and B. Both are fixed for now. The drip rate defines the rate at which chemicals A and B "drip" into the grid, just to make it a bit more fun :)
+ (*) These are two extra simulation parameters not present in the standard Gray-Scott model: drip rate A and B. The drip rate defines the rate at which chemicals A and B "drip" into the grid, just to make it a bit more fun :)
 
 Press `ENTER` to get to the selected parameter's value. A parameter value is shown as a gradually filled LED matrix. Use `PREV` and `NEXT` to decrease and increase the value. Pressing `ENTER` again sets the value and returns to the menu. Pressing `ENTER` on `X` closes the menu All simulation parameters are saved to EEPROM on menu close.
 
